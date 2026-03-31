@@ -4,7 +4,7 @@ pipeline {
     }
 
     environment {
-        COURSE='Devops'
+        appVersion = ''
     }
 
     options {
@@ -12,11 +12,26 @@ pipeline {
         timeout(time:30, unit:'MINUTES') 
     }
 
-    parameters {
-        string(name: 'BRANCH', defaultValue: 'CSE', description: 'BRANCH name')
-    }
-
     stages {
+        // install pipeline utility steps
+        stage('Read package.json') {
+            steps {
+                script {
+                    // Read the entire package.json file into a Groovy object
+                    def packageJSON = readJSON file: 'package.json'
+                    
+                    // Access specific properties, such as 'version' or 'name'
+                    appVersion = packageJSON.version
+                    def appName = packageJSON.name
+
+                    // Log the values
+                    echo "Application Name: ${appName}"
+                    echo "Application Version: ${appVersion}"
+                }
+            }
+        }
+
+
         stage('Build') {
             steps {
                 echo 'Building..'
@@ -33,16 +48,6 @@ pipeline {
                     }else{
                         echo 'Other branch using groovy method'
                     }
-                }
-            }
-        }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying....'
-                script{
-                    sh '''
-                    echo "Deploying using shell script method"
-                    '''
                 }
             }
         }
