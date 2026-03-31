@@ -42,6 +42,17 @@ pipeline {
             }
         }
 
+        //install aws credentials and aws steps plugins before this
+        stage('Docker Build') {
+            steps {
+                script {
+                    """
+                        withAWS 
+                    """
+                }
+            }
+        }
+
 
         stage('Build') {
             steps {
