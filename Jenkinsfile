@@ -31,6 +31,16 @@ pipeline {
             }
         }
 
+        stage('Install Dependencies stage') {
+            steps {
+                script {
+                    """
+                        npm install
+                    """
+                }
+            }
+        }
+
 
         stage('Build') {
             steps {
