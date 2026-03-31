@@ -31,6 +31,7 @@ pipeline {
             }
         }
 
+        //ssh into agent and first install npm and then run this file
         stage('Install Dependencies stage') {
             steps {
                 script {
