@@ -6,7 +6,7 @@ pipeline {
     environment {
         appVersion = ''
         REGION="us-east-1"
-        ACCOUNT_ID=""
+        ACCOUNT_ID="517695827891"
         PROJECT="roboshop"
         COMPONENT="catalogue"
     }
@@ -51,44 +51,14 @@ pipeline {
             steps {
                 script {
                     """
-                        withAWS 
+                        withAWS(credentials: 'aws-creds', region: 'us-east-1'){
+                            aws ecr get-login-password --region ${REGION} | docker login --username AWS --password-stdin ${ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com
+                            docker tag roboshop/catalogue:v1 ${ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/roboshop/catalogue:v1
+                            docker push ${ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/roboshop/catalogue:v1
+                        }
                     """
                 }
             }
-        }
-
-
-        stage('Build') {
-            steps {
-                echo 'Building..'
-                echo "${COURSE} is very good"
-                echo "${params.BRANCH} is bad"
-            }
-        }
-        stage('Test') {
-            steps {
-                echo 'Testing..'
-                script{
-                    if(params.BRANCH == 'CSE'){
-                        echo 'CSE branch using groovy method'
-                    }else{
-                        echo 'Other branch using groovy method'
-                    }
-                }
-            }
-        }
-    }
-
-    post {
-        always {
-            echo 'This will always run'
-            //deleteDir()
-        }
-        success {
-            echo 'This will run only if the build succeeds!!!'
-        }
-        failure {
-            echo 'This will run only if the build fails'
         }
     }
 }
