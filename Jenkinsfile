@@ -1,3 +1,6 @@
+//before running this pipeline install these plugins
+//stage view,pipeline utility steps,aws credentials,aws steps plugins
+// in the worker node install docker,node js before hand
 pipeline {
     agent {
         label 'AGENT1'
