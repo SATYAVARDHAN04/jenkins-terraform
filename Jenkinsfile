@@ -5,6 +5,10 @@ pipeline {
 
     environment {
         appVersion = ''
+        REGION="us-east-1"
+        ACCOUNT_ID=""
+        PROJECT="roboshop"
+        COMPONENT="catalogue"
     }
 
     options {
